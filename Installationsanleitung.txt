@@ -1,0 +1,32 @@
+Installationsanleitung Cafeteria-Planer:
+
+1) Stellen Sie zunächst sicher, dass das System, auf dem Sie den Planer installieren die Systemanforderungen 
+erfüllt. Außerdem muss der Webbrowser, mit dem Sie den Planer benutzen wollen, JavaScript aktiviert haben
+und mit jQuery2 kompatibel sein.
+
+2) Extrahieren Sie Dateien aus dem Zip-Archiv in das gewünschte Verzeichnis auf dem Webserver
+
+3) Der Ordner "app/tmp" muss für den Webserver beschreibbar sein. Stellen Sie dies sicher.
+
+4) Richten Sie die Datenbankkonfiguration ein, indem Sie die Datei "app/Config/database.php" öffnen
+und das Array $default mit den gewünschten Werten füllen.
+
+5) Richten Sie die Verbindung zum gewünschten SMTP-Server ein, indem sie die Datei "app/Config/email.php" öffnen und
+das Array $web mit den entsprechenden Werten füllen.
+
+6) Um die automatischen Prozesse zum Laufen zu bringen, müssen folgende Crontab-Befehle ausgeführt werden:
+0 14 * * 3 cd <Rootverzeichnis des Planers> && <php-Interpreter> -f MissingShiftMailScript.php > <Logdatei>
+0 14 15 6 * cd <Rootverzeichnis des Planers> && <php-Interpreter> -f VacationInsertionScript.php > <Logdatei>
+
+7) Der Ordner "app/lastruns" muss sowohl für den Webserver, als auch für den Nutzer, welcher die Cronjobs ausführt, schreibbar sein.
+Dies beinhaltet auch sämtliche darin enthaltenen Dateien. Ebenfalls ist es notwendig, dass der Nutzer, der die Crontab-Befehle ausführt,
+ebenfalls Schreibrechte in app/tmp (rekursiv) hat. Stellen Sie dies entsprechend sicher.
+
+8) Ggf. möchten Sie eine Datenbank nach dem Schema, wie es der alte Cafeteriaplan verwendet hat, migrieren. Benutzen Sie dazu
+das beigefügte Java-Programm. Dafür erstellen Sie bitte zuerst das Datenbankgerüst (durch Import von cafeteria_dev_structure.sql)
+Damit die Migration möglich ist, tragen Sie bitte entsprechende Konfigurationsdaten in "in" und "out" ein.
+Es gilt das Schema: Host <Enter> Benutzer <Enter> Passwort <Enter> Datenbankname.
+Anschließend führen Sie den Befehl "java -jar dbtransfer.jar in out" aus.
+
+Der Cafeteria-Planer ist nun einsatzbereit.
+Herzlichen Glückwunsch.
